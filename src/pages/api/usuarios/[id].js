@@ -27,8 +27,12 @@ const deleteUsuario = async (req, res) => {
 const updateUsuario = async (req, res) => {
     const { id } = req.query;
     const { nombre, apellido, dni, mail, direccion, obra_social } = req.body;
+    const query = 'UPDATE datos SET ? WHERE id=?';
     try {
-        await pool.query('UPDATE datos SET nombre = ?, apellido = ?, dni = ?, mail = ?, direccion = ?, obra_social = ?, WHERE id = ?', [nombre, apellido, dni, mail, direccion, obra_social, id]);
+        await pool.query(query, [
+            req.body,
+            req.query.id,
+        ]);
         return res.status(204).json();
     } catch (error) {
         return res.status(500).json({ message: error.message });

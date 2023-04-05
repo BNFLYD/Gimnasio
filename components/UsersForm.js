@@ -17,20 +17,33 @@ export function UsersForm() {
   })
 
   useEffect(() => {
-    const getUsuario = async () => {
-      const { data } = await axios.get(`/api/usuarios/${router.query.id}`);
-      setUsuario(data);
-    }
+    const fetchUsuario = async (id) => {
+      try {
+        const { data } = await axios.get("/api/usuarios/" + id);
+        setUsuario(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     if (router.query.id) {
-      getUsuario(router.query.id);
+      fetchUsuario(router.query.id);
     }
-  }, [])
+    console.log("called");
+  }, [router.query.id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (router.query.id) {
       console.log(`actualizando datos`)
-      const res = await axios.put(`/api/usuarios/${usuario}`);
+      const res = await axios.put(`/api/usuarios/${router.query.id}`, {
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        dni: usuario.dni,
+        mail: usuario.mail,
+        direccion: usuario.direccion,
+        obra_social: usuario.obra_social
+      });
       console.log(res);
     } else {
       const res = await axios.post('/api/usuarios', usuario);
@@ -98,7 +111,13 @@ export function UsersForm() {
           value={usuario.obra_social}
         />
 
-        <button className="bg-yellow-500 hover:bg-yellow-700 py-2 px-4 rounded focus:outline-none font-bold text-white"> Guardar Datos</button>
+        <button
+          className="bg-yellow-500 hover:bg-yellow-700 py-2 px-4 rounded focus:outline-none font-bold text-white"
+        >
+          {
+            router.query.id ? `Actualizar Datos` : `Guardar Datos`
+          }
+        </button>
 
       </form>
     </div>
