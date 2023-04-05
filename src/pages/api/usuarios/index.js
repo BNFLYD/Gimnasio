@@ -5,6 +5,8 @@ export default async function handler(req, res) {
             return await guardar_usuario(req, res);
         case 'GET':
             return await buscar_usuario(req, res);
+            default:
+                break
     }
 }
     const guardar_usuario = async (req, res) => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 
 export function UsersForm() {
@@ -16,10 +16,26 @@ export function UsersForm() {
     obra_social: ''
   })
 
+  useEffect(() => {
+    const getUsuario = async () => {
+      const { data } = await axios.get(`/api/usuarios/${router.query.id}`);
+      setUsuario(data);
+    }
+    if (router.query.id) {
+      getUsuario(router.query.id);
+    }
+  }, [])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post('/api/usuarios', usuario);
-    console.log(res);
+    if (router.query.id) {
+      console.log(`actualizando datos`)
+      const res = await axios.put(`/api/usuarios/${usuario}`);
+      console.log(res);
+    } else {
+      const res = await axios.post('/api/usuarios', usuario);
+      console.log(res);
+    }
     router.push('/admin');
   };
 
@@ -27,26 +43,62 @@ export function UsersForm() {
     <div className="w-full max-w-xs">
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <label htmlFor='nombre'>Nombre:</label>
-        <input type='text' name='nombre' onChange={handleChange} className="shadow border rounded py-2 px-3" />
+        <input
+          type='text'
+          name='nombre'
+          onChange={handleChange}
+          className="shadow border rounded py-2 px-3"
+          value={usuario.nombre}
+        />
 
         <label htmlFor='apellido'>Apellido:</label>
-        <input type='text' name='apellido' onChange={handleChange} className="shadow border rounded py-2 px-3" />
+        <input
+          type='text'
+          name='apellido'
+          onChange={handleChange}
+          className="shadow border rounded py-2 px-3"
+          value={usuario.apellido}
+        />
 
         <label htmlFor='dni'>DNI:</label>
-        <input type='number' name='dni' onChange={handleChange} className="shadow border rounded py-2 px-3" />
+        <input
+          type='number'
+          name='dni'
+          onChange={handleChange}
+          className="shadow border rounded py-2 px-3"
+          value={usuario.dni}
+        />
 
         <label htmlFor='mail'>Correo:</label>
-        <input type='text' name='mail' onChange={handleChange} className="shadow border rounded py-2 px-3" />
+        <input
+          type='text'
+          name='mail'
+          onChange={handleChange}
+          className="shadow border rounded py-2 px-3"
+          value={usuario.mail}
+        />
 
 
         <label htmlFor='direccion'>Domicilio:</label>
-        <input type='text' name='direccion' onChange={handleChange} className="shadow border rounded py-2 px-3" />
+        <input
+          type='text'
+          name='direccion'
+          onChange={handleChange}
+          className="shadow border rounded py-2 px-3"
+          value={usuario.direccion}
+        />
 
 
         <label htmlFor='obra_social'>Obra Social</label>
-        <input type='text' name='obra_social' onChange={handleChange} className="shadow border rounded py-2 px-3" />
+        <input
+          type='text'
+          name='obra_social'
+          onChange={handleChange}
+          className="shadow border rounded py-2 px-3"
+          value={usuario.obra_social}
+        />
 
-        <button className="bg-blue-500 hover:bg-blue-700 py-2 px-4 rounded focus:outline-none font-bold text-white"> Guardar Datos</button>
+        <button className="bg-yellow-500 hover:bg-yellow-700 py-2 px-4 rounded focus:outline-none font-bold text-white"> Guardar Datos</button>
 
       </form>
     </div>
