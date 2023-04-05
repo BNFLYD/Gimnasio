@@ -1,7 +1,9 @@
-export default function Home() {
+import { Layout } from '../../components/Layout';
+
+function Home({ usuarios }) {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <Layout></Layout>
   )
 }
+
+export default Home; 
