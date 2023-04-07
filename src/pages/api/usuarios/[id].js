@@ -12,26 +12,30 @@ export default async function handler(req, res) {
     }
 }
 
+let query = ``;
+
 const getUsuario = async (req, res) => {
     const { id } = req.query;
-    const [result] = await pool.query('SELECT * FROM datos WHERE id = ?', [id]);
+    query = `SELECT * FROM datos WHERE id = ?`;
+    const [result] = await pool.query(query, [id]);
     return res.status(200).json(result[0]);
 }
 
 const deleteUsuario = async (req, res) => {
     const { id } = req.query;
-    const result = await pool.query('DELETE FROM datos WHERE id = ?', [id]);
+    query = `DELETE FROM datos WHERE id = ?`;
+    const result = await pool.query(query, [id]);
     return res.status(204).json();
 }
 
 const updateUsuario = async (req, res) => {
     const { id } = req.query;
     const { nombre, apellido, dni, mail, direccion, obra_social } = req.body;
-    const query = 'UPDATE datos SET ? WHERE id=?';
+    query = `UPDATE datos SET ? WHERE id=?`;
     try {
         await pool.query(query, [
             req.body,
-            req.query.id,
+            req.query.id
         ]);
         return res.status(204).json();
     } catch (error) {

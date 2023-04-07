@@ -22,14 +22,13 @@ export function UsersForm() {
         const { data } = await axios.get("/api/usuarios/" + id);
         setUsuario(data);
       } catch (error) {
-        console.error(error);
+        console.error(error.message);
       }
     };
 
     if (router.query.id) {
       fetchUsuario(router.query.id);
     }
-    console.log("called");
   }, [router.query.id]);
 
   const handleSubmit = async (e) => {
