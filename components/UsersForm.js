@@ -48,7 +48,7 @@ export function UsersForm() {
       const res = await axios.post('/api/usuarios', usuario);
       console.log(res);
     }
-    router.push('/admin');
+    router.push('/');
   };
 
   return (
